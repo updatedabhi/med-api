@@ -1,15 +1,9 @@
 const express = require("express");
-
+const medicineRouter = require("./routes/medicineRoute");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.end("Hello World");
-});
+app.use(express.json());
 
-app.get("/api-v1-getAllMedicine", (req, res) => {
-  res.end("Work is under construction..");
-});
+app.use("/api-v1-medicines", medicineRouter);
 
-app.listen(3000, () => {
-  console.log(`http://localhost:3000`);
-});
+module.exports = app;
