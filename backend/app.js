@@ -1,9 +1,11 @@
 const express = require("express");
-const medicineRouter = require("./routes/medicineRoute");
 const app = express();
+const medicineRouter = require("./routes/medicineRoute");
+const userRouter = require("./routes/userRoute");
 
 app.use(express.json());
 
-app.use("/api-v1-medicines", medicineRouter);
+app.use("/api/users", userRouter);
+app.use("/api/medicines", medicineRouter);
 
 module.exports = app;

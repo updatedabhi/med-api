@@ -2,7 +2,11 @@ const Medicine = require("../models/medicineModel");
 
 const getMedicines = async (req, res) => {
   try {
-    const medicines = await Medicine.find();
+    const queryObject = JSON.parse(JSON.stringify(req.query));
+    const excludeFields = ["limit", "sort", "page", "fields"];
+    excludeFields.forEach((el) => delete queryObject[el]);
+    const query = Medicine.find(queryObject);
+    const medicines = await query;
     res.status(200).json({
       status: "success",
       data: {
@@ -31,6 +35,23 @@ const addMedicines = async (req, res) => {
   }
 };
 
+const getMedicine = async (req, res) => {
+  try {
+    const medicine = await Medicine.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: {
+        medicine,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
+};
+
 const updateMedicine = async (req, res) => {
   try {
     const newMedicine = await Medicine.findByIdAndUpdate(
@@ -52,7 +73,7 @@ const updateMedicine = async (req, res) => {
   }
 };
 
-const deletMedicine = async (req, res) => {
+const deleteMedicine = async (req, res) => {
   try {
     await Medicine.findByIdAndDelete(req.params.id);
     res.status(201).json({
@@ -64,4 +85,10 @@ const deletMedicine = async (req, res) => {
   }
 };
 
-module.exports = { getMedicines, addMedicines, updateMedicine, deletMedicine };
+module.exports = {
+  getMedicines,
+  addMedicines,
+  getMedicine,
+  updateMedicine,
+  deleteMedicine,
+};
